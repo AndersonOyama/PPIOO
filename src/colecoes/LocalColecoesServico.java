@@ -10,4 +10,6 @@ public class LocalColecoesServico implements ColecoesServico {
     public LocalColecoesServico(ColecoesDao dao) {
         this.dao = dao;
     }
+    
+    
 }

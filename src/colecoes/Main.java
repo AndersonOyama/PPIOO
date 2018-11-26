@@ -28,15 +28,37 @@ public class Main {
         loop:
         while (true) {
             String comando = leComand();
+            System.out.println(comando);
+            String[] subString = comando.split(" album");
+            
             // Cada comando deve efetuar uma chamada de método de servico
             // ex: service.novoAlbum(parametros...)
             // Se o código dentro de um case ficar muito extenso, você deve
             // criar um novo método, ex executaComandoNovoAlbum
-            switch (comando) {
+            switch (subString[0]) {
+                case "criar":
+                    System.out.println("Ok " + subString[1]);
+                    ColecoesServico.criarAlbum(subString[1]);
+                    break;
+
+                case "editar":
+                    System.out.println("Editar ok" + subString[1]);
+                    break;
+                    
+                case "albums":
+                    
+                    break;
+                    
+                case "novac":
+                    
+                    break;
+                    
+                
+                    
                 case "sair":
                     break loop;
                 default:
-                    saida.println("Comando inválido: " + comando);
+                    saida.println("Comando inválido: " + subString[0]);
             }
         }
     }

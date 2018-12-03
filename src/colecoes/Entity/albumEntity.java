@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package colecoes.Entity;
 
-/**
- *
- * @author ander
- */
+import colecoes.ColecoesServico;
+import sun.util.locale.provider.LocaleServiceProviderPool;
+
 public class albumEntity {
+    
+    
     String nomeAlbum;
     int quantFigura = 0;
 
@@ -30,6 +26,7 @@ public class albumEntity {
     public int getQuantFigura() {
         return quantFigura;
     }
-    
+
+
     
 }

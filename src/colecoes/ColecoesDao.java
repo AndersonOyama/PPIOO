@@ -1,11 +1,13 @@
 package colecoes;
 
-// Esta interface deve conter métodos que armazenam e recuperam os dados
 import colecoes.Entity.albumEntity;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+// Esta interface deve conter métodos que armazenam e recuperam os dados
 // inseridos no programa. Alguns possíveis métodos
 // - salvaAlbum, armazena um álbum que pode ser recuperado posteriormente;
 // - encontraAlbumPorId, recebe um id e devolve um álbum com este id (se
@@ -18,19 +20,19 @@ import java.util.List;
 // implementar a interface ColecoesDao também deve ter uma classe de testes.
 public interface ColecoesDao {
 
-    List<albumEntity> listaAlbuns = new ArrayList<>();
+    static HashMap<String, List<Integer>> bdAlbum = new HashMap<String, List<Integer>>();
 
-    public static boolean encontraAlbum(String nomeAlbum) {
-        for (albumEntity a : listaAlbuns) {
-            if (a.getNomeAlbum().equals(nomeAlbum)) {
-                return true;
-            }
-        }
+    static public boolean persisteAlbum(String nome, Integer quantFig) {
+        ArrayList fig = new ArrayList<>(quantFig);
+        bdAlbum.put(nome, fig);
         return false;
     }
-    
-    public static void salvaAlbum(albumEntity alb){
-        
+
+    static public boolean buscaAlbum(String nome) {
+        if(bdAlbum.containsKey(nome)){
+            return true;
+        }
+        return false;
     }
 
 }

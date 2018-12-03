@@ -37,8 +37,8 @@ public class Main {
             // criar um novo método, ex executaComandoNovoAlbum
             switch (subString[0]) {
                 case "criar":
-                    System.out.println("Ok " + subString[1]);
-                    ColecoesServico.criarAlbum(subString[1]);
+                    //System.out.println("Ok " + subString[1]);
+                    //ColecoesServico.criarAlbum(subString[1]);
                     break;
 
                 case "editar":

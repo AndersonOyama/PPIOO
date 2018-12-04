@@ -1,6 +1,9 @@
 package colecoes;
 
 // Uma implementação de ColecoesServico que armazena os dados e executa as
+
+import java.util.ArrayList;
+
 // operações localmente. Todas as operações de armazenamento e recuperação de
 // dados são feitas através da instância dao.
 public class LocalColecoesServico implements ColecoesServico {
@@ -11,25 +14,24 @@ public class LocalColecoesServico implements ColecoesServico {
         this.dao = dao;
     }
 
-    public boolean criarAlbum(String parametros) {
-        if (parametros.length() < 3) { //VERIFICA SE TEM PELO MENOS 1 LETRA E 1 NÚMERO PARA DECLARAR O NOME AO ALBUM E A QUANTIDADE DE FIGURINHAS
-            System.out.println("Parâmetros insuficientes para criar um album. Verifique os dados informado.");
-            return false;
-        }
-
-        String[] dados = parametros.split("\" ");
-        String nomeAlbum = dados[0].replace("\"", "");
-        //System.out.println(nomeAlbum);
-
+    LocalColecoesServico() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    @Override
+    public void criarAlbum(String nomeAlbum, Integer quantFig, ArrayList<Integer> figuras) {
         if (ColecoesDao.buscaAlbum(nomeAlbum) == true) { //VERIFICA A EXISTENCIA DO ALBUM PARA NÃO PERMITIR CRIAR DOIS ALBUM IGUAIS
             System.out.println("O álbum já existe");
-            return false;
-
+            return;
         } else {
-
+            ColecoesDao.persisteAlbum(nomeAlbum, quantFig);
+            if(figuras.size() > 0){
+                //GUARDAR FIGURAS 
+            }
+            System.out.println("Album criado com sucesso!");
         }
-
-        return true;
+        return;
     }
 
     @Override
@@ -37,5 +39,3 @@ public class LocalColecoesServico implements ColecoesServico {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
-
-

@@ -1,7 +1,10 @@
 package colecoes;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Scanner;
+import colecoes.LocalColecoesServico;
+import colecoes.ColecoesServico;
 
 // Classe principal que implementa uma interface orientada a comandos com o
 // usuário.
@@ -28,33 +31,34 @@ public class Main {
         loop:
         while (true) {
             String comando = leComand();
-            System.out.println(comando);
+            //System.out.println(comando);
             String[] subString = comando.split(" album");
-            
+
             // Cada comando deve efetuar uma chamada de método de servico
             // ex: service.novoAlbum(parametros...)
             // Se o código dentro de um case ficar muito extenso, você deve
             // criar um novo método, ex executaComandoNovoAlbum
             switch (subString[0]) {
                 case "criar":
-                    //System.out.println("Ok " + subString[1]);
-                    //ColecoesServico.criarAlbum(subString[1]);
+                    String[] dados = subString[1].split("\" ");
+                    String nomeAlbum = dados[0].replace("\"", "").trim();
+                    ArrayList<Integer> arrayFig = parametroFig(dados[0]);
+                    System.out.println("Nome: " + nomeAlbum + " Quant: " + arrayFig.get(0));
+                    //LocalColecoesServico.criarAlbum(nomeAlbum, Integer.parseInt(dados[1]), conjFig);
                     break;
 
                 case "editar":
                     System.out.println("Editar ok" + subString[1]);
                     break;
-                    
+
                 case "albums":
-                    
+
                     break;
-                    
+
                 case "novac":
-                    
+
                     break;
-                    
-                
-                    
+
                 case "sair":
                     break loop;
                 default:
@@ -71,6 +75,17 @@ public class Main {
                 return comando;
             }
         }
+    }
+    
+    
+    ArrayList<Integer> parametroFig(String dados){
+        ArrayList<Integer> fig = new ArrayList<>();
+        String[] dividido = dados.split(" ");
+        for(int i = 0; i < dividido.length; i++){
+            fig.set(i, Integer.parseInt(dividido[i]));
+            System.out.println(fig.get(i));
+        }
+        return fig;
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package colecoes;
 
 // Uma implementação de ColecoesServico que armazena os dados e executa as
-
 import java.util.ArrayList;
 
 // operações localmente. Todas as operações de armazenamento e recuperação de
@@ -14,28 +13,29 @@ public class LocalColecoesServico implements ColecoesServico {
         this.dao = dao;
     }
 
-    LocalColecoesServico() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
     @Override
-    public void criarAlbum(String nomeAlbum, Integer quantFig, ArrayList<Integer> figuras) {
-        if (ColecoesDao.buscaAlbum(nomeAlbum) == true) { //VERIFICA A EXISTENCIA DO ALBUM PARA NÃO PERMITIR CRIAR DOIS ALBUM IGUAIS
-            System.out.println("O álbum já existe");
-            return;
+    public boolean criarAlbum(String nomeAlbum, Integer quantFig) {
+        int id = buscaAlbum(nomeAlbum);
+        if (id != -1) { //VERIFICA A EXISTENCIA DO ALBUM PARA NÃO PERMITIR CRIAR DOIS ALBUM IGUAIS
+            System.out.println("O álbum já existe." + " (ID: " + id + " )");
+            return false;
+        } else if (quantFig <= 0) {
+            System.out.println("A quantidade de figurinhas é invalida");
+            return false;
         } else {
-            ColecoesDao.persisteAlbum(nomeAlbum, quantFig);
-            if(figuras.size() > 0){
-                //GUARDAR FIGURAS 
-            }
-            System.out.println("Album criado com sucesso!");
+            id = ColecoesDao.persisteAlbum(nomeAlbum, quantFig);
+            System.out.println("Album criado com sucesso! " + "ID: " + id);
         }
-        return;
+        return true;
     }
 
     @Override
     public int buscaAlbum(String nomeAlbum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int id = ColecoesDao.buscaAlbum(nomeAlbum);
+        return id;
+    }
+    
+    public void mostraTodosAlbuns(){
+        ColecoesDao.mostraAlbuns();
     }
 }

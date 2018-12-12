@@ -9,6 +9,6 @@ import java.util.ArrayList;
 public interface ColecoesServico {
 
     public int buscaAlbum(String nomeAlbum);
-    public void criarAlbum(String nomeAlbum, Integer quantFig, ArrayList<Integer> figuras);
+    public boolean criarAlbum(String nomeAlbum, Integer quantFig);
     
 }

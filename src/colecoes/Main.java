@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import colecoes.LocalColecoesServico;
 import colecoes.ColecoesServico;
+import colecoes.ColecoesDao;
 
 // Classe principal que implementa uma interface orientada a comandos com o
 // usuário.
@@ -33,6 +34,8 @@ public class Main {
             String comando = leComand();
             //System.out.println(comando);
             String[] subString = comando.split(" album");
+            String[] dados = subString[1].split("\" ");
+            String nomeAlbum = dados[0].replace("\"", "").trim();
 
             // Cada comando deve efetuar uma chamada de método de servico
             // ex: service.novoAlbum(parametros...)
@@ -40,13 +43,24 @@ public class Main {
             // criar um novo método, ex executaComandoNovoAlbum
             switch (subString[0]) {
                 case "criar":
-                    String[] dados = subString[1].split("\" ");
-                    String nomeAlbum = dados[0].replace("\"", "").trim();
-                    ArrayList<Integer> arrayFig = parametroFig(dados[0]);
-                    System.out.println("Nome: " + nomeAlbum + " Quant: " + arrayFig.get(0));
-                    //LocalColecoesServico.criarAlbum(nomeAlbum, Integer.parseInt(dados[1]), conjFig);
+                    LocalColecoesServico lColecoesServico = new LocalColecoesServico(null);
+                    lColecoesServico.criarAlbum(nomeAlbum, Integer.parseInt(dados[1]));
                     break;
 
+                case "buscar":
+                    int id = ColecoesDao.buscaAlbum(nomeAlbum);
+                    if(id <= 0){
+                        System.out.println("Album inexistente");
+                    } else {
+                        System.out.println("Album " + nomeAlbum + ", possui ID: " + id + " .");
+                    }
+                    
+                    break;
+                    
+                case "mostrar":
+                    LocalColecoesServico mostrar = new LocalColecoesServico(null);
+                    mostrar.mostraTodosAlbuns();
+                    
                 case "editar":
                     System.out.println("Editar ok" + subString[1]);
                     break;
@@ -76,12 +90,11 @@ public class Main {
             }
         }
     }
-    
-    
-    ArrayList<Integer> parametroFig(String dados){
+
+    ArrayList<Integer> parametroFig(String dados) {
         ArrayList<Integer> fig = new ArrayList<>();
         String[] dividido = dados.split(" ");
-        for(int i = 0; i < dividido.length; i++){
+        for (int i = 0; i < dividido.length; i++) {
             fig.set(i, Integer.parseInt(dividido[i]));
             System.out.println(fig.get(i));
         }
@@ -100,4 +113,10 @@ public class Main {
         Main main = new Main(entrada, servico, System.out);
         main.executa();
     }
+
+    public static String trataEntradaAlbum(String entrada) {
+
+        return null;
+    }
+
 }

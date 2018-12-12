@@ -13,10 +13,24 @@ public class LocalColecoesServicoTest {
     
     @Test
     public void testCriarAlbum() {
-        LocalColecoesServico localService = new LocalColecoesServico();
-        ArrayList<Integer> conjFig = new ArrayList<>();
-        localService.criarAlbum("Album Teste", 60, conjFig);
-        
+        LocalColecoesServico localService = new LocalColecoesServico(null);
+        assertTrue(localService.criarAlbum("Album Teste", 60));
+        assertFalse(localService.criarAlbum("Album Teste", 60)); //CRIAÇÃO DE 2 ALBUNS IGUAIS
+        localService = new LocalColecoesServico(null);
+        LocalColecoesServico localService2 = new LocalColecoesServico(null); //CRIAÇÃO COM QUANTIDADE NEGATIVO OU 0;
+        assertFalse(localService2.criarAlbum("Album Quantidade", 0)); 
     }
     
+    @Test
+    public void testConsultarAlbum(){
+        LocalColecoesServico busca = new LocalColecoesServico(null);
+        assertEquals(busca.buscaAlbum("Album Teste"), 1);
+    }
+    
+    
+    @Test
+    public void testMostraAlbum(){
+        LocalColecoesServico mostra = new LocalColecoesServico(null);
+        
+    }
 }

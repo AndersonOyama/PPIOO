@@ -20,20 +20,37 @@ import java.util.Map;
 // implementar a interface ColecoesDao também deve ter uma classe de testes.
 public interface ColecoesDao {
 
-    HashMap<String, Integer> bdAlbum = new HashMap<String, Integer>();
+    ArrayList<albumEntity> bdAlbum = new ArrayList<>();
     HashMap<String, List<Integer>> conjColecoes = new HashMap<String, List<Integer>>();
-    
-    static public boolean persisteAlbum(String nome, Integer quantFig) {
-        bdAlbum.put(nome, quantFig);
-        return false;
+
+    static public int persisteAlbum(String nome, Integer quantFig) {
+        albumEntity aEnt = new albumEntity();
+        aEnt.setNomeAlbum(nome);
+        aEnt.setQuantFigura(quantFig);
+        aEnt.id = albumEntity.getCount() + 1;
+        bdAlbum.add(aEnt);
+
+        return aEnt.getId();
     }
 
-    static public boolean buscaAlbum(String nome) {
-        if(bdAlbum.containsKey(nome)){
-            
-            return true;
+    static public int buscaAlbum(String nome) {
+        if (bdAlbum.size() == 0) {
+            return -1;
         }
-        return false;
+        for (int i = 0; i < bdAlbum.size(); i++) {
+            if (bdAlbum.get(i).getNomeAlbum().equals(nome)) {
+                System.out.println(i);
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    static public void mostraAlbuns() {
+
+        for (int i = 0; i < bdAlbum.size(); i++) {
+            System.out.println(bdAlbum.get(i).getNomeAlbum());
+        }
     }
 
 }

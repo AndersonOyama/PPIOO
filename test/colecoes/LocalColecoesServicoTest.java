@@ -21,16 +21,27 @@ public class LocalColecoesServicoTest {
         assertFalse(localService2.criarAlbum("Album Quantidade", 0));
     }
 
-    @Test
-    public void testConsultarAlbum() {
-        
-        LocalColecoesServico busca = new LocalColecoesServico(null);
-        assertEquals(busca.buscaAlbum("Album Teste") , 1);
-    }
+//    @Test
+//    public void testConsultarAlbum() {
+//        LocalColecoesServico busca = new LocalColecoesServico(null);
+//        assertEquals(busca.buscaAlbum("Album Teste") , 1);
+//    }
 
     @Test
-    public void testMostraAlbum() {
+    public void testAlbuns() {
         LocalColecoesServico mostra = new LocalColecoesServico(null);
         mostra.mostraTodosAlbuns();
+    }
+    
+    @Test
+    public void testMostrar(){
+        LocalColecoesServico mostrar = new LocalColecoesServico(null);
+        mostrar.mostrarAlbum(0);
+    }
+    
+    @Test
+    public void testCriarColecao(){
+        LocalColecoesServico criaCol = new LocalColecoesServico(null);
+        assertTrue(criaCol.criarColecao("Colecao Teste", 0));
     }
 }

@@ -38,8 +38,11 @@ public class Main {
             return token[0];
         } else if (token[0].equals("nova") && token[1].equals("colecao")){
             return temp = token[0] + " " + token[1];
-        }
-        return null;
+        } else if(token[0].equals("mostrar")){
+            return token[0];
+        } else if(token[0].equals("sair"))
+            return token[0];
+        return entrada;
     }
 
     
@@ -83,12 +86,19 @@ public class Main {
                     mostrar.mostraTodosAlbuns();
                     break;
 
-                case "editar":
-                    System.out.println("Editar ok");
+                case "mostrar":
+                    String[] idAlbum = comando.split(" ");
+                    System.out.println(comando);
+                    System.out.println(idAlbum[1]);
+                    LocalColecoesServico mostrarCompleto = new LocalColecoesServico(null);
+                    mostrarCompleto.mostrarAlbum(Integer.parseInt(idAlbum[1]));
+                    
                     break;
 
-                case "albums":
-
+                case "nova colecao":
+                    String[] nomeColecao = comando.split(" ");
+                    LocalColecoesServico nColecao = new LocalColecoesServico(null);
+                    nColecao.criarColecao(nomeColecao[3], Integer.parseInt(nomeColecao[2]));
                     break;
 
                 case "novac":

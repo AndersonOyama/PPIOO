@@ -1,11 +1,8 @@
 package colecoes;
 
+import colecoes.Entity.ColecoesEntity;
 import colecoes.Entity.albumEntity;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 // Esta interface deve conter métodos que armazenam e recuperam os dados
 // inseridos no programa. Alguns possíveis métodos
@@ -21,7 +18,7 @@ import java.util.Map;
 public interface ColecoesDao {
 
     ArrayList<albumEntity> bdAlbum = new ArrayList<>();
-    HashMap<String, List<Integer>> conjColecoes = new HashMap<String, List<Integer>>();
+    ArrayList<ColecoesEntity> conjColecoes = new ArrayList<>();
 
     static public int persisteAlbum(String nome, Integer quantFig) {
         albumEntity aEnt = new albumEntity();
@@ -40,7 +37,19 @@ public interface ColecoesDao {
         }
         return -1;
     }
+    
+    static public int buscaAlbumId(Integer id, Integer dadosCompleto){
+        if(bdAlbum.get(id) != null && dadosCompleto == 0){
+            return bdAlbum.get(id).getQuantFigura();
+        } else if(bdAlbum.get(id) != null && dadosCompleto == 1){
+            System.out.println("Título: " + bdAlbum.get(id).getNomeAlbum());
+            System.out.println("Quantidade de figurinha: " + bdAlbum.get(id).getQuantFigura());
+        }
+        return -1;
+    }
 
+  
+    
     static public void mostraAlbuns() {
 
         for (int i = 0; i < bdAlbum.size(); i++) {
@@ -48,4 +57,22 @@ public interface ColecoesDao {
         }
     }
 
+    static public boolean criaColecao(String nome, Integer id, Integer quantFigurinha){
+        for(int i = 0; i < bdAlbum.size();i++){
+            if((bdAlbum.get(i).getNomeAlbum()).equals(nome)){
+                System.out.println("Nome de coleção já existente!");
+                return false;
+            }
+        }
+        ColecoesEntity colecao = new ColecoesEntity();
+        colecao.setIdAlbum(id);
+        colecao.setNomeColecao(nome);
+        ArrayList<Integer> figuras = new ArrayList<>(quantFigurinha);
+        for(int i = 0; i < quantFigurinha; i++){
+            figuras.add(i, 0);
+        }
+        return true;
+    }
+    
+    
 }

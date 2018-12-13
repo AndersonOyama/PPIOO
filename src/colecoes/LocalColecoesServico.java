@@ -45,4 +45,22 @@ public class LocalColecoesServico implements ColecoesServico {
         System.out.println("Albuns:");
         ColecoesDao.mostraAlbuns();
     }
+    
+    public void mostrarAlbum(Integer id){
+        Integer quantidade = ColecoesDao.buscaAlbumId(id, 1);
+        
+    }
+    
+    @Override
+    public boolean criarColecao(String apelido, Integer idAlbum){
+        Integer quantidade = ColecoesDao.buscaAlbumId(idAlbum, 0);
+        if(quantidade == -1){
+            System.out.println("ID inexistente!");
+            return false;
+        } else {
+            ColecoesDao.criaColecao(apelido, idAlbum, quantidade);
+
+        }
+        return true;
+    }
 }

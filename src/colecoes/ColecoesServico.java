@@ -10,5 +10,6 @@ public interface ColecoesServico {
 
     public int buscaAlbum(String nomeAlbum);
     public boolean criarAlbum(String nomeAlbum, Integer quantFig);
-    
+    public void mostraTodosAlbuns();
+    public boolean criarColecao(String apelido, Integer idAlbum);
 }

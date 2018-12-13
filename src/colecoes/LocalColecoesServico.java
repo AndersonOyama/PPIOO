@@ -32,10 +32,17 @@ public class LocalColecoesServico implements ColecoesServico {
     @Override
     public int buscaAlbum(String nomeAlbum) {
         int id = ColecoesDao.buscaAlbum(nomeAlbum);
-        return id;
+        if(id < 0){
+//            System.out.println("Album inexistente!");
+            return -1;
+        } else {
+            return id;
+        }
+        
     }
     
     public void mostraTodosAlbuns(){
+        System.out.println("Albuns:");
         ColecoesDao.mostraAlbuns();
     }
 }

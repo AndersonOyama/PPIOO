@@ -6,6 +6,7 @@ import java.util.Scanner;
 import colecoes.LocalColecoesServico;
 import colecoes.ColecoesServico;
 import colecoes.ColecoesDao;
+import java.util.StringTokenizer;
 
 // Classe principal que implementa uma interface orientada a comandos com o
 // usuário.
@@ -28,41 +29,62 @@ public class Main {
         this.saida = saida;
     }
 
+    public String formataString(String entrada) {
+        String temp;
+        String[] token = entrada.split("\\s+");
+        if (token[0].equals("criar") && token[1].equals("album")) {
+            return temp = token[0] + " " + token[1];
+        } else if (token[0].equals("albuns")) {
+            return token[0];
+        } else if (token[0].equals("nova") && token[1].equals("colecao")){
+            return temp = token[0] + " " + token[1];
+        }
+        return null;
+    }
+
+    
+   public String[] pegaNomeAlbum(String entrada, String comando){
+       entrada = entrada.replace(comando, "");
+       String[] temp = entrada.split("\"");
+       
+       return temp;
+   }
+    
     public void executa() {
         loop:
         while (true) {
             String comando = leComand();
-            //System.out.println(comando);
-            String[] subString = comando.split(" album");
-            String[] dados = subString[1].split("\" ");
-            String nomeAlbum = dados[0].replace("\"", "").trim();
+            String executa = formataString(comando);
 
             // Cada comando deve efetuar uma chamada de método de servico
             // ex: service.novoAlbum(parametros...)
             // Se o código dentro de um case ficar muito extenso, você deve
             // criar um novo método, ex executaComandoNovoAlbum
-            switch (subString[0]) {
-                case "criar":
+            switch (executa) {
+                case "criar album":
+                    String[] nomeAlbum = pegaNomeAlbum(comando, executa);
                     LocalColecoesServico lColecoesServico = new LocalColecoesServico(null);
-                    lColecoesServico.criarAlbum(nomeAlbum, Integer.parseInt(dados[1]));
+                    lColecoesServico.criarAlbum(nomeAlbum[1], Integer.parseInt((nomeAlbum[2]).replaceAll("\\s+", "")));
                     break;
 
                 case "buscar":
-                    int id = ColecoesDao.buscaAlbum(nomeAlbum);
-                    if(id <= 0){
+                    nomeAlbum = pegaNomeAlbum(comando, executa);
+                    int id = ColecoesDao.buscaAlbum(nomeAlbum[0]);
+                    if (id <= 0) {
                         System.out.println("Album inexistente");
                     } else {
                         System.out.println("Album " + nomeAlbum + ", possui ID: " + id + " .");
                     }
-                    
+
                     break;
-                    
-                case "mostrar":
+
+                case "albuns":
                     LocalColecoesServico mostrar = new LocalColecoesServico(null);
                     mostrar.mostraTodosAlbuns();
-                    
+                    break;
+
                 case "editar":
-                    System.out.println("Editar ok" + subString[1]);
+                    System.out.println("Editar ok");
                     break;
 
                 case "albums":
@@ -76,7 +98,7 @@ public class Main {
                 case "sair":
                     break loop;
                 default:
-                    saida.println("Comando inválido: " + subString[0]);
+                    saida.println("Comando inválido: " + comando);
             }
         }
     }

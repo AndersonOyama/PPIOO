@@ -4,8 +4,7 @@ import colecoes.ColecoesServico;
 import sun.util.locale.provider.LocaleServiceProviderPool;
 
 public class albumEntity {
-    
-    
+
     String nomeAlbum;
     int quantFigura = 0;
     

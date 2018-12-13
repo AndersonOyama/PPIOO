@@ -27,19 +27,14 @@ public interface ColecoesDao {
         albumEntity aEnt = new albumEntity();
         aEnt.setNomeAlbum(nome);
         aEnt.setQuantFigura(quantFig);
-        aEnt.id = albumEntity.getCount() + 1;
+        aEnt.id = bdAlbum.size();
         bdAlbum.add(aEnt);
-
         return aEnt.getId();
     }
 
     static public int buscaAlbum(String nome) {
-        if (bdAlbum.size() == 0) {
-            return -1;
-        }
         for (int i = 0; i < bdAlbum.size(); i++) {
             if (bdAlbum.get(i).getNomeAlbum().equals(nome)) {
-                System.out.println(i);
                 return i;
             }
         }
@@ -49,7 +44,7 @@ public interface ColecoesDao {
     static public void mostraAlbuns() {
 
         for (int i = 0; i < bdAlbum.size(); i++) {
-            System.out.println(bdAlbum.get(i).getNomeAlbum());
+            System.out.println("\t-" + bdAlbum.get(i).getNomeAlbum() + " ID: " + i);
         }
     }
 

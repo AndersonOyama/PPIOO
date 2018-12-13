@@ -37,19 +37,17 @@ public interface ColecoesDao {
         }
         return -1;
     }
-    
-    static public int buscaAlbumId(Integer id, Integer dadosCompleto){
-        if(bdAlbum.get(id) != null && dadosCompleto == 0){
+
+    static public int buscaAlbumId(Integer id, Integer dadosCompleto) {
+        if (bdAlbum.get(id) != null && dadosCompleto == 0) {
             return bdAlbum.get(id).getQuantFigura();
-        } else if(bdAlbum.get(id) != null && dadosCompleto == 1){
+        } else if (bdAlbum.get(id) != null && dadosCompleto == 1) {
             System.out.println("Título: " + bdAlbum.get(id).getNomeAlbum());
             System.out.println("Quantidade de figurinha: " + bdAlbum.get(id).getQuantFigura());
         }
         return -1;
     }
 
-  
-    
     static public void mostraAlbuns() {
 
         for (int i = 0; i < bdAlbum.size(); i++) {
@@ -57,10 +55,9 @@ public interface ColecoesDao {
         }
     }
 
-    static public boolean criaColecao(String nome, Integer id, Integer quantFigurinha){
-        for(int i = 0; i < bdAlbum.size();i++){
-            if((bdAlbum.get(i).getNomeAlbum()).equals(nome)){
-                System.out.println("Nome de coleção já existente!");
+    static public boolean criaColecao(String nome, Integer id, Integer quantFigurinha) {
+        for (int i = 0; i < conjColecoes.size(); i++) {
+            if ((conjColecoes.get(i).getNomeColecao()).equals(nome) && (conjColecoes.get(i).getIdAlbum()).equals(id)) {
                 return false;
             }
         }
@@ -68,11 +65,30 @@ public interface ColecoesDao {
         colecao.setIdAlbum(id);
         colecao.setNomeColecao(nome);
         ArrayList<Integer> figuras = new ArrayList<>(quantFigurinha);
-        for(int i = 0; i < quantFigurinha; i++){
-            figuras.add(i, 0);
+        for (int i = 0; i < quantFigurinha; i++) {
+            figuras.add(0);
         }
         return true;
     }
-    
-    
+
+    static public boolean persisteFigurinhas(String nome, Integer idALbum, Integer figurinha) {
+        for (int i = 0; i < conjColecoes.size(); i++) {
+            if (conjColecoes.get(i).getNomeColecao().equals(nome) && conjColecoes.get(i).getIdAlbum().equals(idALbum)) {
+                ArrayList temp = conjColecoes.get(i).getFigurinhas();
+                System.out.println(temp.get(figurinha));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static public boolean mostraColecao(Integer idAlbum, String nomeColecao) {
+        for (int i = 0; i < conjColecoes.size(); i++) {
+            if(conjColecoes.get(i).getNomeColecao().equals(nomeColecao) && conjColecoes.get(i).getIdAlbum().equals(idAlbum)){
+                System.out.println(conjColecoes.get(i).getNomeColecao());
+            }
+        }
+        return false;
+    }
+
 }

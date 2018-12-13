@@ -57,10 +57,32 @@ public class LocalColecoesServico implements ColecoesServico {
         if(quantidade == -1){
             System.out.println("ID inexistente!");
             return false;
-        } else {
-            ColecoesDao.criaColecao(apelido, idAlbum, quantidade);
+        } else{
+            if(ColecoesDao.criaColecao(apelido, idAlbum, quantidade) == false){
+                System.out.println("Nome de Coleção já existente!");
+            } else{
+                System.out.println("Coleção \""+apelido+ "\" criado.");
+                        
+            }
 
         }
         return true;
+    }
+    
+    
+    
+    @Override
+    public boolean addFigurinha(Integer id, String nomeColecao, Integer figurinhas){
+        if(ColecoesDao.persisteFigurinhas(nomeColecao, id, figurinhas) == true){
+            System.out.println("Figurinha: " + figurinhas +" adicionado a coleção: " + nomeColecao + ".");
+            return true;
+        } else {
+            System.out.println("Erro ao adicionar as figurinhas. Verifique os dados inseridos!");
+            return false;
+        }   
+    }
+    
+    public void mostraColecao(Integer id, String nomeColecao){
+        
     }
 }

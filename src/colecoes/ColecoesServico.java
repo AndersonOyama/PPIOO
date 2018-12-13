@@ -12,4 +12,6 @@ public interface ColecoesServico {
     public boolean criarAlbum(String nomeAlbum, Integer quantFig);
     public void mostraTodosAlbuns();
     public boolean criarColecao(String apelido, Integer idAlbum);
+    public boolean addFigurinha(Integer id, String nomeColecao, Integer figurinhas);
+    public void mostraColecao(Integer id, String nomeColecao);
 }

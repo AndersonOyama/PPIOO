@@ -6,7 +6,9 @@ import java.util.Scanner;
 import colecoes.LocalColecoesServico;
 import colecoes.ColecoesServico;
 import colecoes.ColecoesDao;
+import com.sun.org.apache.xpath.internal.operations.Equals;
 import java.util.StringTokenizer;
+import jdk.nashorn.internal.parser.Token;
 
 // Classe principal que implementa uma interface orientada a comandos com o
 // usuário.
@@ -36,23 +38,27 @@ public class Main {
             return temp = token[0] + " " + token[1];
         } else if (token[0].equals("albuns")) {
             return token[0];
-        } else if (token[0].equals("nova") && token[1].equals("colecao")){
+        } else if (token[0].equals("nova") && token[1].equals("colecao")) {
             return temp = token[0] + " " + token[1];
-        } else if(token[0].equals("mostrar")){
+        } else if (token[0].equals("mostrar")) {
             return token[0];
-        } else if(token[0].equals("sair"))
+        } else if (token[0].equals("sair")) {
             return token[0];
+        } else if (token[0].equals("adicionar")) {
+            return token[0];
+        } else if(token[0].equals("mostrar") && token[1].equals("colecao")){
+            return (token[0] + " " + token[1]);
+        }
         return entrada;
     }
 
-    
-   public String[] pegaNomeAlbum(String entrada, String comando){
-       entrada = entrada.replace(comando, "");
-       String[] temp = entrada.split("\"");
-       
-       return temp;
-   }
-    
+    public String[] pegaNomeAlbum(String entrada, String comando) {
+        entrada = entrada.replace(comando, "");
+        String[] temp = entrada.split("\"");
+
+        return temp;
+    }
+
     public void executa() {
         loop:
         while (true) {
@@ -92,7 +98,7 @@ public class Main {
                     System.out.println(idAlbum[1]);
                     LocalColecoesServico mostrarCompleto = new LocalColecoesServico(null);
                     mostrarCompleto.mostrarAlbum(Integer.parseInt(idAlbum[1]));
-                    
+
                     break;
 
                 case "nova colecao":
@@ -101,8 +107,13 @@ public class Main {
                     nColecao.criarColecao(nomeColecao[3], Integer.parseInt(nomeColecao[2]));
                     break;
 
-                case "novac":
-
+                case "adicionar":
+                    String[] colecao = comando.split(" ");
+                    LocalColecoesServico addColecao = new LocalColecoesServico(null);
+                    for(int i = 3; i < colecao.length; i++){
+                        addColecao.addFigurinha(Integer.parseInt(colecao[1]), colecao[2], Integer.parseInt(colecao[i]));
+                    }
+                    
                     break;
 
                 case "sair":
@@ -146,9 +157,5 @@ public class Main {
         main.executa();
     }
 
-    public static String trataEntradaAlbum(String entrada) {
-
-        return null;
-    }
 
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ColecoesEntity {
     String nomeColecao;
     Integer idAlbum;
-    ArrayList<Integer> figurinhas = new ArrayList<>();
+    ArrayList<Integer> listaFigurinhas = new ArrayList<>();
 
     public String getNomeColecao() {
         return nomeColecao;
@@ -24,9 +24,10 @@ public class ColecoesEntity {
         return idAlbum;
     }
 
-    public ArrayList<Integer> getFigurinhas() {
-        return figurinhas;
+    public ArrayList<Integer> getListaFigurinhas() {
+        return listaFigurinhas;
     }
+
 
     public void setNomeColecao(String nomeColecao) {
         this.nomeColecao = nomeColecao;
@@ -36,9 +37,11 @@ public class ColecoesEntity {
         this.idAlbum = idAlbum;
     }
 
-    public void setFigurinhas(ArrayList<Integer> figurinhas) {
-        this.figurinhas = figurinhas;
+    public void setListaFigurinhas(ArrayList<Integer> listaFigurinhas) {
+        this.listaFigurinhas = listaFigurinhas;
     }
+
+
     
     
 }

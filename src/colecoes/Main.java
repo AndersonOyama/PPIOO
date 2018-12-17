@@ -6,6 +6,8 @@ import java.util.Scanner;
 import colecoes.LocalColecoesServico;
 import colecoes.ColecoesServico;
 import colecoes.ColecoesDao;
+import static colecoes.ColecoesDao.mostraCol;
+import colecoes.Entity.albumEntity;
 import com.sun.org.apache.xpath.internal.operations.Equals;
 import java.util.StringTokenizer;
 import jdk.nashorn.internal.parser.Token;
@@ -46,7 +48,7 @@ public class Main {
             return token[0];
         } else if (token[0].equals("adicionar")) {
             return token[0];
-        } else if(token[0].equals("mostrar") && token[1].equals("colecao")){
+        } else if (token[0].equals("mostrar") && token[1].equals("colecao")) {
             return (token[0] + " " + token[1]);
         }
         return entrada;
@@ -59,24 +61,29 @@ public class Main {
         return temp;
     }
 
+    public String[] tokenizar(String parametros) {
+        String[] tokenizado = parametros.split("//s+");
+        return tokenizado;
+    }
+
     public void executa() {
         loop:
         while (true) {
             String comando = leComand();
             String executa = formataString(comando);
-
+            String[] tokens = tokenizar(comando);
             // Cada comando deve efetuar uma chamada de método de servico
             // ex: service.novoAlbum(parametros...)
             // Se o código dentro de um case ficar muito extenso, você deve
             // criar um novo método, ex executaComandoNovoAlbum
             switch (executa) {
-                case "criar album":
+                case "criar album"://OK
                     String[] nomeAlbum = pegaNomeAlbum(comando, executa);
                     LocalColecoesServico lColecoesServico = new LocalColecoesServico(null);
-                    lColecoesServico.criarAlbum(nomeAlbum[1], Integer.parseInt((nomeAlbum[2]).replaceAll("\\s+", "")));
+                    System.out.println(lColecoesServico.criarAlbum(nomeAlbum[1], Integer.parseInt((nomeAlbum[2]).replaceAll("\\s+", ""))));
                     break;
 
-                case "buscar":
+                case "buscar": //ok
                     nomeAlbum = pegaNomeAlbum(comando, executa);
                     int id = ColecoesDao.buscaAlbum(nomeAlbum[0]);
                     if (id <= 0) {
@@ -87,33 +94,36 @@ public class Main {
 
                     break;
 
-                case "albuns":
+                case "albuns": //OK
+                    ArrayList<albumEntity> albuns = new ArrayList<>();
                     LocalColecoesServico mostrar = new LocalColecoesServico(null);
-                    mostrar.mostraTodosAlbuns();
+                    albuns = mostrar.mostraTodosAlbuns();
+                    for (int i = 0; i < albuns.size(); i++) {
+                        System.out.println("\t" + i+1 + " - " + albuns.get(i).getNomeAlbum());
+                    }
                     break;
 
-                case "mostrar":
-                    String[] idAlbum = comando.split(" ");
-                    System.out.println(comando);
-                    System.out.println(idAlbum[1]);
+                case "mostrar": //OK
                     LocalColecoesServico mostrarCompleto = new LocalColecoesServico(null);
-                    mostrarCompleto.mostrarAlbum(Integer.parseInt(idAlbum[1]));
-
+                    albumEntity album = new albumEntity();
+                    album = mostrarCompleto.mostrarAlbum(Integer.parseInt(tokens[1]));
+                    System.out.println("Nome do album: " + album.getNomeAlbum() + " ID: " + album.getId());
                     break;
 
                 case "nova colecao":
                     String[] nomeColecao = comando.split(" ");
                     LocalColecoesServico nColecao = new LocalColecoesServico(null);
-                    nColecao.criarColecao(nomeColecao[3], Integer.parseInt(nomeColecao[2]));
+                    System.out.println(nColecao.criarColecao(nomeColecao[3], Integer.parseInt(nomeColecao[2])));
                     break;
 
                 case "adicionar":
+                    mostraCol();
                     String[] colecao = comando.split(" ");
                     LocalColecoesServico addColecao = new LocalColecoesServico(null);
-                    for(int i = 3; i < colecao.length; i++){
+                    for (int i = 3; i < colecao.length; i++) {
                         addColecao.addFigurinha(Integer.parseInt(colecao[1]), colecao[2], Integer.parseInt(colecao[i]));
                     }
-                    
+
                     break;
 
                 case "sair":
@@ -156,6 +166,5 @@ public class Main {
         Main main = new Main(entrada, servico, System.out);
         main.executa();
     }
-
 
 }

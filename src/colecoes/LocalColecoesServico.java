@@ -1,6 +1,9 @@
 package colecoes;
 
 // Uma implementação de ColecoesServico que armazena os dados e executa as
+import static colecoes.ColecoesDao.conjColecoes;
+import static colecoes.ColecoesDao.tamanhoAlbum;
+import colecoes.Entity.albumEntity;
 import java.util.ArrayList;
 
 // operações localmente. Todas as operações de armazenamento e recuperação de
@@ -14,75 +17,67 @@ public class LocalColecoesServico implements ColecoesServico {
     }
 
     @Override
-    public boolean criarAlbum(String nomeAlbum, Integer quantFig) {
+    public String criarAlbum(String nomeAlbum, Integer quantFig) {
         int id = buscaAlbum(nomeAlbum);
         if (id != -1) { //VERIFICA A EXISTENCIA DO ALBUM PARA NÃO PERMITIR CRIAR DOIS ALBUM IGUAIS
-            System.out.println("O álbum já existe." + " (ID: " + id + " )");
-            return false;
+            return ("O álbum já existe." + " (ID: " + id + " )");
         } else if (quantFig <= 0) {
-            System.out.println("A quantidade de figurinhas é invalida");
-            return false;
+            return ("A quantidade de figurinhas é invalida");
         } else {
             id = ColecoesDao.persisteAlbum(nomeAlbum, quantFig);
-            System.out.println("Album criado com sucesso! " + "ID: " + id);
+            return ("Album criado com sucesso! " + "ID: " + id);
         }
-        return true;
     }
 
     @Override
     public int buscaAlbum(String nomeAlbum) {
         int id = ColecoesDao.buscaAlbum(nomeAlbum);
-        if(id < 0){
+        if (id < 0) {
 //            System.out.println("Album inexistente!");
             return -1;
         } else {
             return id;
         }
-        
+
     }
-    
-    public void mostraTodosAlbuns(){
-        System.out.println("Albuns:");
-        ColecoesDao.mostraAlbuns();
-    }
-    
-    public void mostrarAlbum(Integer id){
-        Integer quantidade = ColecoesDao.buscaAlbumId(id, 1);
-        
-    }
-    
+
     @Override
-    public boolean criarColecao(String apelido, Integer idAlbum){
-        Integer quantidade = ColecoesDao.buscaAlbumId(idAlbum, 0);
-        if(quantidade == -1){
-            System.out.println("ID inexistente!");
-            return false;
-        } else{
-            if(ColecoesDao.criaColecao(apelido, idAlbum, quantidade) == false){
-                System.out.println("Nome de Coleção já existente!");
-            } else{
-                System.out.println("Coleção \""+apelido+ "\" criado.");
-                        
+    public ArrayList<albumEntity> mostraTodosAlbuns() {
+        ArrayList<albumEntity> todosAlbuns = new ArrayList<>();
+        todosAlbuns = ColecoesDao.mostraAlbuns();
+        return todosAlbuns;
+    }
+
+    public albumEntity mostrarAlbum(Integer id) {
+        albumEntity dadosAlbum = new albumEntity();
+        return dadosAlbum = ColecoesDao.buscaAlbumId(id);
+    }
+
+    @Override
+    public String criarColecao(String apelido, Integer idAlbum) {
+        albumEntity album = new albumEntity();
+        album = ColecoesDao.buscaAlbumId(idAlbum);
+        if (album == null) {
+            return ("ID do album inexistente!");
+        } else {
+            if (ColecoesDao.criaColecao(apelido, idAlbum, album.getQuantFigura()) == false) {
+                return ("Nome de Coleção já existente!");
+            } else {
+                return ("Coleção \"" + apelido + "\" criado.");
+
             }
 
         }
-        return true;
     }
-    
-    
-    
+
     @Override
-    public boolean addFigurinha(Integer id, String nomeColecao, Integer figurinhas){
-        if(ColecoesDao.persisteFigurinhas(nomeColecao, id, figurinhas) == true){
-            System.out.println("Figurinha: " + figurinhas +" adicionado a coleção: " + nomeColecao + ".");
+    public boolean addFigurinha(Integer id, String nomeColecao, Integer figurinhas) {
+        if (ColecoesDao.persisteFigurinhas(nomeColecao, id, figurinhas) == true) {
+            System.out.println("Figurinha: " + figurinhas + " adicionado a coleção: " + nomeColecao + ".");
             return true;
         } else {
             System.out.println("Erro ao adicionar as figurinhas. Verifique os dados inseridos!");
             return false;
-        }   
-    }
-    
-    public void mostraColecao(Integer id, String nomeColecao){
-        
+        }
     }
 }

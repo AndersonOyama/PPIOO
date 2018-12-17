@@ -38,21 +38,20 @@ public interface ColecoesDao {
         return -1;
     }
 
-    static public int buscaAlbumId(Integer id, Integer dadosCompleto) {
-        if (bdAlbum.get(id) != null && dadosCompleto == 0) {
-            return bdAlbum.get(id).getQuantFigura();
-        } else if (bdAlbum.get(id) != null && dadosCompleto == 1) {
-            System.out.println("Título: " + bdAlbum.get(id).getNomeAlbum());
-            System.out.println("Quantidade de figurinha: " + bdAlbum.get(id).getQuantFigura());
+    static public albumEntity buscaAlbumId(Integer id) {
+        if (bdAlbum.get(id) == null) {
+            return null;
+        } else {
+            return bdAlbum.get(id);
         }
-        return -1;
     }
 
-    static public void mostraAlbuns() {
+    static public int tamanhoAlbum() {
+        return (bdAlbum.size());
+    }
 
-        for (int i = 0; i < bdAlbum.size(); i++) {
-            System.out.println("\t-" + bdAlbum.get(i).getNomeAlbum() + " ID: " + i);
-        }
+    static public ArrayList<albumEntity> mostraAlbuns() {
+        return bdAlbum;
     }
 
     static public boolean criaColecao(String nome, Integer id, Integer quantFigurinha) {
@@ -60,22 +59,30 @@ public interface ColecoesDao {
             if ((conjColecoes.get(i).getNomeColecao()).equals(nome) && (conjColecoes.get(i).getIdAlbum()).equals(id)) {
                 return false;
             }
+
         }
-        ColecoesEntity colecao = new ColecoesEntity();
-        colecao.setIdAlbum(id);
-        colecao.setNomeColecao(nome);
-        ArrayList<Integer> figuras = new ArrayList<>(quantFigurinha);
-        for (int i = 0; i < quantFigurinha; i++) {
-            figuras.add(0);
+        if (bdAlbum.get(id) != null) {
+            ColecoesEntity colecao = new ColecoesEntity();
+            colecao.setIdAlbum(id);
+            colecao.setNomeColecao(nome);
+            ArrayList<Integer> figuras = new ArrayList<>();
+            for (int i = 0; i < quantFigurinha; i++) {
+                figuras.add(0);
+            }
+            colecao.setListaFigurinhas(figuras);
+            conjColecoes.add(colecao);
+            return true;
         }
-        return true;
+        System.out.println("Album de id: " + id + " indexistente!");
+        return false;
     }
 
     static public boolean persisteFigurinhas(String nome, Integer idALbum, Integer figurinha) {
         for (int i = 0; i < conjColecoes.size(); i++) {
             if (conjColecoes.get(i).getNomeColecao().equals(nome) && conjColecoes.get(i).getIdAlbum().equals(idALbum)) {
-                ArrayList temp = conjColecoes.get(i).getFigurinhas();
-                System.out.println(temp.get(figurinha));
+                ArrayList<Integer> temp = conjColecoes.get(i).getListaFigurinhas();
+                int fig = temp.get(figurinha);
+                temp.add(figurinha, fig = fig + 1);
                 return true;
             }
         }
@@ -84,11 +91,26 @@ public interface ColecoesDao {
 
     static public boolean mostraColecao(Integer idAlbum, String nomeColecao) {
         for (int i = 0; i < conjColecoes.size(); i++) {
-            if(conjColecoes.get(i).getNomeColecao().equals(nomeColecao) && conjColecoes.get(i).getIdAlbum().equals(idAlbum)){
+            if (conjColecoes.get(i).getNomeColecao().equals(nomeColecao) && conjColecoes.get(i).getIdAlbum().equals(idAlbum)) {
                 System.out.println(conjColecoes.get(i).getNomeColecao());
             }
         }
         return false;
+    }
+
+    static public void mostraCol() {
+        for (int i = 0; i < conjColecoes.size(); i++) {
+            System.out.println("Nome: " + conjColecoes.get(i).getNomeColecao() + " Id Colec: " + conjColecoes.get(i).getIdAlbum());
+        }
+    }
+
+    static void mostraColecao() {
+        for (int i = 0; i < bdAlbum.size(); i++) {
+            System.out.println("\t-" + bdAlbum.get(i).getNomeAlbum() + " ID: " + i);
+            for (int j = 0; j < conjColecoes.size(); i++) {
+                System.out.println("* " + conjColecoes.get(j).getNomeColecao()); //TERMINAR PORCENTAGEM.
+            }
+        }
     }
 
 }

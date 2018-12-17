@@ -7,7 +7,7 @@ public class albumEntity {
 
     String nomeAlbum;
     int quantFigura = 0;
-    
+
     private static int count = 0;
     public int id = 0;
 
@@ -22,8 +22,6 @@ public class albumEntity {
     public static void setCount(int count) {
         albumEntity.count = count;
     }
-    
-    
 
     public String getNomeAlbum() {
         return nomeAlbum;
@@ -40,10 +38,5 @@ public class albumEntity {
     public int getId() {
         return id;
     }
-    
-   
 
-    
-
-    
 }

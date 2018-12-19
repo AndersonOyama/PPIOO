@@ -3,7 +3,7 @@ package colecoes.Entity;
 import colecoes.ColecoesServico;
 import sun.util.locale.provider.LocaleServiceProviderPool;
 
-public class albumEntity {
+public class AlbumEntity {
 
     String nomeAlbum;
     int quantFigura = 0;
@@ -20,7 +20,7 @@ public class albumEntity {
     }
 
     public static void setCount(int count) {
-        albumEntity.count = count;
+        AlbumEntity.count = count;
     }
 
     public String getNomeAlbum() {

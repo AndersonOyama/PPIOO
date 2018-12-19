@@ -1,8 +1,9 @@
 package colecoes;
 
 import colecoes.Entity.ColecoesEntity;
-import colecoes.Entity.albumEntity;
+import colecoes.Entity.AlbumEntity;
 import java.util.ArrayList;
+import java.util.Random;
 
 // Esta interface deve conter métodos que armazenam e recuperam os dados
 // inseridos no programa. Alguns possíveis métodos
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 // implementar a interface ColecoesDao também deve ter uma classe de testes.
 public interface ColecoesDao {
 
-    ArrayList<albumEntity> bdAlbum = new ArrayList<>();
+    ArrayList<AlbumEntity> bdAlbum = new ArrayList<>();
     ArrayList<ColecoesEntity> conjColecoes = new ArrayList<>();
 
     static public int persisteAlbum(String nome, Integer quantFig) {
-        albumEntity aEnt = new albumEntity();
+        AlbumEntity aEnt = new AlbumEntity();
         aEnt.setNomeAlbum(nome);
         aEnt.setQuantFigura(quantFig);
         aEnt.id = bdAlbum.size();
@@ -38,7 +39,7 @@ public interface ColecoesDao {
         return -1;
     }
 
-    static public albumEntity buscaAlbumId(Integer id) {
+    static public AlbumEntity buscaAlbumId(Integer id) {
         if (bdAlbum.get(id) == null) {
             return null;
         } else {
@@ -50,7 +51,7 @@ public interface ColecoesDao {
         return (bdAlbum.size());
     }
 
-    static public ArrayList<albumEntity> mostraAlbuns() {
+    static public ArrayList<AlbumEntity> mostraAlbuns() {
         return bdAlbum;
     }
 
@@ -73,44 +74,42 @@ public interface ColecoesDao {
             conjColecoes.add(colecao);
             return true;
         }
-        System.out.println("Album de id: " + id + " indexistente!");
         return false;
     }
 
     static public boolean persisteFigurinhas(String nome, Integer idALbum, Integer figurinha) {
         for (int i = 0; i < conjColecoes.size(); i++) {
             if (conjColecoes.get(i).getNomeColecao().equals(nome) && conjColecoes.get(i).getIdAlbum().equals(idALbum)) {
-                ArrayList<Integer> temp = conjColecoes.get(i).getListaFigurinhas();
-                int fig = temp.get(figurinha);
-                temp.add(figurinha, fig = fig + 1);
+                conjColecoes.get(i).getListaFigurinhas().add(figurinha);
                 return true;
             }
         }
         return false;
     }
 
-    static public boolean mostraColecao(Integer idAlbum, String nomeColecao) {
-        for (int i = 0; i < conjColecoes.size(); i++) {
-            if (conjColecoes.get(i).getNomeColecao().equals(nomeColecao) && conjColecoes.get(i).getIdAlbum().equals(idAlbum)) {
-                System.out.println(conjColecoes.get(i).getNomeColecao());
-            }
+
+    static ArrayList<ColecoesEntity> mostraColecao() {
+        return conjColecoes;
+    }
+    
+
+    static boolean removeFigura(Integer id, Integer figura, String apelido){
+        if(conjColecoes.get(id) != null){
+            conjColecoes.get(id).getListaFigurinhas().remove(figura);
+            return true;
         }
         return false;
     }
-
-    static public void mostraCol() {
-        for (int i = 0; i < conjColecoes.size(); i++) {
-            System.out.println("Nome: " + conjColecoes.get(i).getNomeColecao() + " Id Colec: " + conjColecoes.get(i).getIdAlbum());
+    
+    static public String sorteio(Integer id, String apelido){
+        Random r = new Random();
+        int quantidade = bdAlbum.get(id).getQuantFigura();
+        int sortido = r.nextInt(quantidade);
+        int pagar = r.nextInt(quantidade);
+        
+        if(removeFigura(id, pagar, apelido) && persisteFigurinhas(apelido, id, sortido)){
+            return ("Figura ganha: " + sortido + " Figura perdida como pagamento: " + pagar);
         }
+        return ("Erro ao sortear a figura");
     }
-
-    static void mostraColecao() {
-        for (int i = 0; i < bdAlbum.size(); i++) {
-            System.out.println("\t-" + bdAlbum.get(i).getNomeAlbum() + " ID: " + i);
-            for (int j = 0; j < conjColecoes.size(); i++) {
-                System.out.println("* " + conjColecoes.get(j).getNomeColecao()); //TERMINAR PORCENTAGEM.
-            }
-        }
-    }
-
 }

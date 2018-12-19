@@ -1,10 +1,13 @@
 package colecoes;
 
 // Uma implementação de ColecoesServico que armazena os dados e executa as
-import static colecoes.ColecoesDao.conjColecoes;
-import static colecoes.ColecoesDao.tamanhoAlbum;
-import colecoes.Entity.albumEntity;
+import static colecoes.ColecoesDao.bdAlbum;
+import static colecoes.ColecoesDao.persisteFigurinhas;
+import static colecoes.ColecoesDao.removeFigura;
+import colecoes.Entity.ColecoesEntity;
+import colecoes.Entity.AlbumEntity;
 import java.util.ArrayList;
+import java.util.Random;
 
 // operações localmente. Todas as operações de armazenamento e recuperação de
 // dados são feitas através da instância dao.
@@ -42,20 +45,22 @@ public class LocalColecoesServico implements ColecoesServico {
     }
 
     @Override
-    public ArrayList<albumEntity> mostraTodosAlbuns() {
-        ArrayList<albumEntity> todosAlbuns = new ArrayList<>();
+    public ArrayList<AlbumEntity> mostraTodosAlbuns() {
+        ArrayList<AlbumEntity> todosAlbuns = new ArrayList<>();
         todosAlbuns = ColecoesDao.mostraAlbuns();
+        ArrayList<ColecoesEntity> colecao = new ArrayList<>();
+
         return todosAlbuns;
     }
 
-    public albumEntity mostrarAlbum(Integer id) {
-        albumEntity dadosAlbum = new albumEntity();
+    public AlbumEntity mostrarAlbum(Integer id) {
+        AlbumEntity dadosAlbum = new AlbumEntity();
         return dadosAlbum = ColecoesDao.buscaAlbumId(id);
     }
 
     @Override
     public String criarColecao(String apelido, Integer idAlbum) {
-        albumEntity album = new albumEntity();
+        AlbumEntity album = new AlbumEntity();
         album = ColecoesDao.buscaAlbumId(idAlbum);
         if (album == null) {
             return ("ID do album inexistente!");
@@ -71,13 +76,41 @@ public class LocalColecoesServico implements ColecoesServico {
     }
 
     @Override
-    public boolean addFigurinha(Integer id, String nomeColecao, Integer figurinhas) {
+    public String addFigurinha(Integer id, String nomeColecao, Integer figurinhas) {
         if (ColecoesDao.persisteFigurinhas(nomeColecao, id, figurinhas) == true) {
-            System.out.println("Figurinha: " + figurinhas + " adicionado a coleção: " + nomeColecao + ".");
-            return true;
+            return ("Figurinha: " + figurinhas + " adicionado a coleção: " + nomeColecao + ".");
+
         } else {
-            System.out.println("Erro ao adicionar as figurinhas. Verifique os dados inseridos!");
-            return false;
+            return ("Erro ao adicionar as figurinhas. Verifique os dados inseridos!");
+
         }
+    }
+    
+    @Override
+    public ArrayList<ColecoesEntity> mostraColec(){
+        ArrayList<ColecoesEntity> colecoes = new ArrayList<>();
+        return colecoes = ColecoesDao.mostraColecao();
+    }
+
+    
+
+    public String removeFigura(Integer id, String nome, Integer figura){
+        if(ColecoesDao.removeFigura(id, figura, nome) == true){
+            return ("Figura removido com sucesso");
+        }
+        return ("Erro ao remover a figura");
+    }
+    
+    @Override
+     public String sorteio(Integer id, String apelido){
+        Random r = new Random();
+        int quantidade = bdAlbum.get(id).getQuantFigura();
+        int sortido = r.nextInt(quantidade);
+        int pagar = r.nextInt(quantidade);
+        
+        if(removeFigura(id, apelido, pagar).contains("removido") && addFigurinha(id, apelido, sortido).contains("adicionado")){
+            return ("Figura ganha: " + sortido + " Figura perdida como pagamento: " + pagar);
+        }
+        return ("Erro ao sortear a figura");
     }
 }

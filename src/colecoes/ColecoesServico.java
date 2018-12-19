@@ -1,7 +1,8 @@
 package colecoes;
 
 // Cada método desta interface é responsável por uma funcionalidade do programa.
-import colecoes.Entity.albumEntity;
+import colecoes.Entity.ColecoesEntity;
+import colecoes.Entity.AlbumEntity;
 import java.util.ArrayList;
 
 // Os métodos declarados nesta interface devem ser implementados na classe
@@ -12,13 +13,18 @@ public interface ColecoesServico {
 
     public String criarAlbum(String nomeAlbum, Integer quantFig);
 
-    public ArrayList<albumEntity> mostraTodosAlbuns();
+    public ArrayList<AlbumEntity> mostraTodosAlbuns();
 
     public String criarColecao(String apelido, Integer idAlbum);
 
-    public boolean addFigurinha(Integer id, String nomeColecao, Integer figurinhas);
+    public String addFigurinha(Integer id, String nomeColecao, Integer figurinhas);
     
-    public albumEntity mostrarAlbum(Integer id);
+    public AlbumEntity mostrarAlbum(Integer id);
 
+    public ArrayList<ColecoesEntity> mostraColec();
+    
+    public String removeFigura(Integer id, String nome, Integer figura);
+    
+    public String sorteio(Integer id, String apelido);
   
 }

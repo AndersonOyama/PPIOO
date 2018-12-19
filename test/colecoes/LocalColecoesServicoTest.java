@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import colecoes.LocalColecoesServico;
 import colecoes.ColecoesServico;
 import colecoes.ColecoesDao;
-import colecoes.Entity.albumEntity;
+import colecoes.Entity.AlbumEntity;
+import com.sun.corba.se.spi.protocol.LocalClientRequestDispatcherFactory;
 import java.util.ArrayList;
 
 // Cada funcionalidade da classe LocalColecoesService deve ter pelo menos um
@@ -25,7 +26,7 @@ public class LocalColecoesServicoTest {
 
     @Test
     public void testAlbuns() {
-        ArrayList<albumEntity> albuns = new ArrayList<>();
+        ArrayList<AlbumEntity> albuns = new ArrayList<>();
         LocalColecoesServico mostra = new LocalColecoesServico(null);
         albuns = mostra.mostraTodosAlbuns();
         assertTrue(albuns.size() == 1);
@@ -35,7 +36,9 @@ public class LocalColecoesServicoTest {
     @Test
     public void testMostrar(){
         LocalColecoesServico mostrar = new LocalColecoesServico(null);
-        mostrar.mostrarAlbum(0);
+        AlbumEntity albuns = new AlbumEntity();
+        albuns = mostrar.mostrarAlbum(0);
+        assertTrue(albuns.getNomeAlbum().equals("Album Teste"));
     }
     
     @Test
@@ -45,12 +48,29 @@ public class LocalColecoesServicoTest {
         assertTrue(criaCol.criarColecao("Teste", 0).contains("já"));
     }
 
-//    @Test
-//    public void testInsereFig(){
-//        LocalColecoesServico insereFig = new LocalColecoesServico(null);
-//        assertTrue(insereFig.addFigurinha(0, "Teste", 5));
-//    }
+    @Test
+    public void testInsereFig(){
+        LocalColecoesServico insereFig = new LocalColecoesServico(null);
+        assertTrue(insereFig.addFigurinha(0, "Teste", 5).contains("adicionado a coleção"));
+        assertTrue(insereFig.addFigurinha(0, "Teste", 5).contains("adicionado a coleção"));
+        assertTrue(insereFig.addFigurinha(0, "Teste", 8).contains("adicionado a coleção"));
+    }
+    
+    @Test
+    public void testRemoveFig(){
+        LocalColecoesServico remove = new LocalColecoesServico(null);
+ 
+        
+        assertTrue(remove.removeFigura(0, "Teste", 5).contains("removido"));
+        
+    }
 
+    @Test
+    public void sorteio(){
+        LocalColecoesServico sorteio = new LocalColecoesServico(null);
+        
+        assertTrue(sorteio.sorteio(0, "Teste").contains("ganha"));
+    }
 
 
 }

@@ -6,11 +6,8 @@ import java.util.Scanner;
 import colecoes.LocalColecoesServico;
 import colecoes.ColecoesServico;
 import colecoes.ColecoesDao;
-import static colecoes.ColecoesDao.mostraCol;
-import colecoes.Entity.albumEntity;
-import com.sun.org.apache.xpath.internal.operations.Equals;
-import java.util.StringTokenizer;
-import jdk.nashorn.internal.parser.Token;
+import colecoes.Entity.ColecoesEntity;
+import colecoes.Entity.AlbumEntity;
 
 // Classe principal que implementa uma interface orientada a comandos com o
 // usuário.
@@ -21,6 +18,8 @@ import jdk.nashorn.internal.parser.Token;
 // netbeans), abra o terminal e mude para o diretório do projeto e execute:
 // java -jar dist/Colecoes.jar
 public class Main {
+    
+  
 
     final static String PROMPT = "> ";
     final PrintStream saida;
@@ -50,6 +49,8 @@ public class Main {
             return token[0];
         } else if (token[0].equals("mostrar") && token[1].equals("colecao")) {
             return (token[0] + " " + token[1]);
+        } else if(token[0].equals("remover")){
+            return token[0];
         }
         return entrada;
     }
@@ -95,37 +96,65 @@ public class Main {
                     break;
 
                 case "albuns": //OK
-                    ArrayList<albumEntity> albuns = new ArrayList<>();
+                    ArrayList<AlbumEntity> albuns = new ArrayList<>();
+                    ArrayList<ColecoesEntity> colecoes = new ArrayList<>();
                     LocalColecoesServico mostrar = new LocalColecoesServico(null);
+                    LocalColecoesServico mostraColec = new LocalColecoesServico(null);
                     albuns = mostrar.mostraTodosAlbuns();
+                    colecoes = mostraColec.mostraColec();
                     for (int i = 0; i < albuns.size(); i++) {
                         System.out.println("\t" + i+1 + " - " + albuns.get(i).getNomeAlbum());
+                        for(int j = 0; j < colecoes.size(); j++){
+                            if(colecoes.get(j).getIdAlbum() == i){
+                                ArrayList<Integer> figura = colecoes.get(j).getListaFigurinhas();
+                                int vetor[];
+                                vetor = new int[albuns.get(i).getQuantFigura()];
+                                for(int k = 0; k < figura.size();k++){
+                                    vetor[figura.get(j)] = 1;
+                                }
+                                int soma = 0;
+                                for(int k = 0; k < figura.size(); k++){
+                                    if(vetor[k] == 1 ){
+                                        soma = soma+1;
+                                    }
+                                }
+                                System.out.println("\t\t" + colecoes.get(j).getNomeColecao() + " - " + (soma*100/albuns.get(i).getQuantFigura()) + " - " + colecoes.get(j).getListaFigurinhas() );
+                            }
+                             
+                        }
                     }
                     break;
 
                 case "mostrar": //OK
                     LocalColecoesServico mostrarCompleto = new LocalColecoesServico(null);
-                    albumEntity album = new albumEntity();
+                    AlbumEntity album = new AlbumEntity();
                     album = mostrarCompleto.mostrarAlbum(Integer.parseInt(tokens[1]));
                     System.out.println("Nome do album: " + album.getNomeAlbum() + " ID: " + album.getId());
                     break;
 
-                case "nova colecao":
-                    String[] nomeColecao = comando.split(" ");
+                case "nova colecao": //OK
                     LocalColecoesServico nColecao = new LocalColecoesServico(null);
-                    System.out.println(nColecao.criarColecao(nomeColecao[3], Integer.parseInt(nomeColecao[2])));
+                    System.out.println(nColecao.criarColecao(tokens[3], Integer.parseInt(tokens[2])));
                     break;
 
                 case "adicionar":
-                    mostraCol();
-                    String[] colecao = comando.split(" ");
                     LocalColecoesServico addColecao = new LocalColecoesServico(null);
-                    for (int i = 3; i < colecao.length; i++) {
-                        addColecao.addFigurinha(Integer.parseInt(colecao[1]), colecao[2], Integer.parseInt(colecao[i]));
+                    for (int i = 3; i < tokens.length; i++) {
+                        System.out.println(addColecao.addFigurinha(Integer.parseInt(tokens[1]), tokens[2], Integer.parseInt(tokens[i])));
                     }
 
                     break;
 
+                case "remover":
+                    LocalColecoesServico remover = new LocalColecoesServico(null);
+                    System.out.println(remover.removeFigura(Integer.parseInt(tokens[1]), tokens[2], Integer.parseInt(tokens[3])));
+                    break;
+                    
+                case "sorteio":
+                    LocalColecoesServico sorteio = new LocalColecoesServico(null);
+                    System.out.println(sorteio.sorteio(Integer.parseInt(tokens[1]), tokens[2]));
+                    break;
+                    
                 case "sair":
                     break loop;
                 default:
